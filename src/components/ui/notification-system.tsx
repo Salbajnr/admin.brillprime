@@ -1,16 +1,5 @@
-
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { toast } from '@/hooks/use-toast';
-
-// Firebase configuration (mock for development)
-const mockFirebaseConfig = {
-  apiKey: "demo-api-key",
-  authDomain: "brillprime-demo.firebaseapp.com",
-  projectId: "brillprime-demo",
-  storageBucket: "brillprime-demo.appspot.com",
-  messagingSenderId: "123456789",
-  appId: "1:123456789:web:abcdef123456"
-};
 
 interface NotificationContextType {
   notifications: Notification[];

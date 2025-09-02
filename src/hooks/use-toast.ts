@@ -150,9 +150,6 @@ function toast({ ...props }: Toast) {
       ...props,
       id,
       open: true,
-      onOpenChange: (open: boolean) => { // Typed the 'open' parameter
-        if (!open) dismiss()
-      },
     },
   })
 

@@ -17,7 +17,7 @@ export function ProgressIndicator({
     <div className={cn("w-full", className)}>
       <div className="flex items-center justify-between mb-2">
         {steps ? (
-          steps.map((step, index) => (
+          steps.map((_, index) => (
             <div
               key={index}
               className={cn(

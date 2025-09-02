@@ -1,7 +1,7 @@
 import { Bell, X } from "lucide-react"
 import { Badge } from "./badge"
 import { Button } from "./button"
-import { Card, CardContent, CardHeader, CardTitle } from "./card"
+import { CardContent, CardHeader, CardTitle } from "./card"
 
 interface Notification {
   id: number

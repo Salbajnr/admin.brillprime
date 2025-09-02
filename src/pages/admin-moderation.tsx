@@ -87,7 +87,7 @@ export function AdminModeration() {
   const [selectedReports, setSelectedReports] = useState<number[]>([]);
   const [selectedReport, setSelectedReport] = useState<ContentReport | null>(null);
   
-  const [showReportDetail, setShowReportDetail] = useState<boolean>(false);
+  const [, setShowReportDetail] = useState<boolean>(false);
   const [filters, setFilters] = useState<ModerationFilters>({
     status: '',
     contentType: '',
