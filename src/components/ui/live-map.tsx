@@ -1,6 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Card, CardContent } from './card';
-import { Button } from './button';
 import { Badge } from './badge';
 import { MapPin, Navigation, Truck, Clock } from 'lucide-react';
 
