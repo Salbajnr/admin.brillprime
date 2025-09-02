@@ -4,7 +4,7 @@ import { CheckCircle, XCircle } from 'lucide-react';
 
 interface BatchKycActionsProps {
   selectedIds: string[];
-  onBatchAction: (action: string, ids: string[]) => void;
+  onBatchAction: (action: "approve" | "reject", reason?: string) => Promise<void>;
   disabled?: boolean;
 }
 

@@ -6,12 +6,17 @@ interface MerchantKycSubmission {
   id: string;
   merchantId: string;
   businessName: string;
-  merchantEmail: string;
-  documents: any[];
+  businessAddress: string;
+  businessRegistrationNumber: string;
+  businessEmail: string;
+  businessType: string;
+  ownerFullName: string;
+  ownerNationalId: string;
   status: 'PENDING' | 'APPROVED' | 'REJECTED';
   submittedAt: string;
   reviewedAt?: string;
   rejectionReason?: string;
+  documents: KycDocument[];
 }
 
 interface MerchantKycStats {
@@ -130,9 +135,9 @@ export function AdminKYCVerification() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ 
-          status: action === 'approve' ? 'APPROVED' : 'REJECTED', 
-          reason 
+        body: JSON.stringify({
+          status: action === 'approve' ? 'APPROVED' : 'REJECTED',
+          reason
         }),
       });
 
@@ -155,10 +160,10 @@ export function AdminKYCVerification() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ 
-          documentIds: selectedDocuments, 
-          action, 
-          reason 
+        body: JSON.stringify({
+          documentIds: selectedDocuments,
+          action,
+          reason
         }),
       });
 

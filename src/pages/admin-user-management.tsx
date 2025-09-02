@@ -1,6 +1,6 @@
 
-import React, { useState, useEffect } from 'react';
-import { Search, Filter, MoreVertical, UserCheck, UserX, Shield, Eye } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Search, UserCheck, UserX, Shield, Eye } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Badge } from '../components/ui/badge';
