@@ -12,7 +12,7 @@ export function BatchKycActions({ selectedIds, onBatchAction, disabled, selected
   return (
     <div className="flex gap-2">
       <Button
-        onClick={() => onBatchAction('approve', selectedIds)}
+        onClick={() => onBatchAction('approve')}
         disabled={disabled || selectedIds.length === 0}
         size="sm"
         className="bg-green-600 hover:bg-green-700"
@@ -21,7 +21,7 @@ export function BatchKycActions({ selectedIds, onBatchAction, disabled, selected
         Approve Selected ({selectedCount})
       </Button>
       <Button
-        onClick={() => onBatchAction('reject', selectedIds)}
+        onClick={() => onBatchAction('reject')}
         disabled={disabled || selectedIds.length === 0}
         size="sm"
         variant="destructive"
