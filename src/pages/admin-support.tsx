@@ -8,6 +8,17 @@ export function AdminSupport() {
     setTimeout(() => setLoading(false), 1000);
   }, []);
 
+  if (loading) {
+    return (
+      <div className="space-y-6">
+        <div>
+          <h2 className="text-2xl font-bold text-gray-900">Support Management</h2>
+          <p className="text-gray-600">Loading support data...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
       <div>
