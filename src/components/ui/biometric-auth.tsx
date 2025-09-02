@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from './button';
 import { Card, CardContent } from './card';
-import { Badge } from './badge';
 import { Fingerprint, Scan, Shield, AlertTriangle, CheckCircle } from 'lucide-react';
 
 interface BiometricAuthProps {
@@ -218,7 +217,7 @@ export function BiometricAuth({
       credentials: 'include',
       body: JSON.stringify({
         credentialId: Array.from(new Uint8Array(credential.rawId)),
-        publicKey: Array.from(new Uint8Array((credential.response as AuthenticatorAttestationResponse).publicKey!)),
+        publicKey: Array.from(new Uint8Array((credential.response as AuthenticatorAttestationResponse).getPublicKey()!)),
         type: type
       })
     });
@@ -301,8 +300,8 @@ export function BiometricAuth({
                     {type === 'fingerprint' ? 'Fingerprint' : 'Face Recognition'}
                   </div>
                   <div className="text-sm text-gray-500">
-                    {type === 'fingerprint' 
-                      ? 'Use your fingerprint to authenticate' 
+                    {type === 'fingerprint'
+                      ? 'Use your fingerprint to authenticate'
                       : 'Use your face to authenticate'}
                   </div>
                 </div>
