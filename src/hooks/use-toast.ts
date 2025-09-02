@@ -1,4 +1,3 @@
-
 import * as React from "react"
 
 const TOAST_LIMIT = 1
@@ -10,6 +9,7 @@ type ToasterToast = {
   description?: React.ReactNode
   action?: React.ReactElement
   variant?: "default" | "destructive"
+  open?: boolean // Added open property
 }
 
 const actionTypes = {
@@ -150,7 +150,7 @@ function toast({ ...props }: Toast) {
       ...props,
       id,
       open: true,
-      onOpenChange: (open) => {
+      onOpenChange: (open: boolean) => { // Typed the 'open' parameter
         if (!open) dismiss()
       },
     },
