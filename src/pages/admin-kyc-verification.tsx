@@ -26,8 +26,6 @@ interface MerchantKycStats {
   rejected: number;
 }
 
-import { useState, useEffect } from 'react';
-
 interface KycDocument {
   id: string;
   userId: string;
@@ -82,7 +80,7 @@ export function AdminKYCVerification() {
       });
       if (response.ok) {
         const data = await response.json();
-        setDocuments(data.data || []);
+        setDocuments(data.documents || []);
       }
     } catch (error) {
       console.error('Failed to fetch KYC documents:', error);
@@ -138,24 +136,6 @@ export function AdminKYCVerification() {
     }
   };
 
-  const fetchDocuments = async () => {
-    try {
-      const response = await fetch('/api/admin/kyc/documents', {
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      if (response.ok) {
-        const data = await response.json();
-        setDocuments(data.documents || []);
-      }
-    } catch (error) {
-      console.error('Failed to fetch KYC documents:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const filteredDocuments = documents.filter(doc => {
     if (filterStatus === 'all') return true;
@@ -187,7 +167,7 @@ export function AdminKYCVerification() {
     }
   };
 
-  
+
 
   const handleBatchAction = async (action: 'approve' | 'reject', reason?: string) => {
     try {
@@ -425,7 +405,7 @@ export function AdminKYCVerification() {
         </table>
       </div>
 
-      
+
 
       {selectedDocument && (
         <KycReviewModal
