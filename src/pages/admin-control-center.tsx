@@ -10,7 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import {
-  Shield, Users, DollarSign, AlertTriangle, TrendingUp, 
+  Shield, Users, DollarSign, AlertTriangle, TrendingUp,
   Eye, CheckCircle, XCircle, Clock, Activity, FileText,
   Gavel, RefreshCw, Bell, BarChart3, Settings
 } from 'lucide-react';
@@ -234,12 +234,10 @@ export default function AdminControlCenter() {
                       <Badge>{systemMetrics?.transactions.todayTransactions}</Badge>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span>Active Merchants</span>
-                      <Badge variant="secondary">{systemMetrics?.platform.activeMerchants}</Badge>
+                      <Badge variant="secondary">{systemMetrics?.platform?.activeMerchants || 0}</Badge>
                     </div>
-                    <div className="flex justify-between items-center">
-                      <span>Online Drivers</span>
-                      <Badge variant="outline">{systemMetrics?.platform.onlineDrivers}</Badge>
+                    <div className="text-center">
+                      <Badge variant="outline">{systemMetrics?.platform?.onlineDrivers || 0}</Badge>
                     </div>
                   </div>
                 </CardContent>
@@ -279,11 +277,11 @@ export default function AdminControlCenter() {
                   </CardHeader>
                   <CardContent>
                     <div className="text-3xl font-bold text-blue-600">
-                      {formatCurrency(escrowOverview.totalBalance)}
+                      {formatCurrency(escrowOverview?.totalBalance || 0)}
                     </div>
-                    <p className="text-sm text-muted-foreground mt-2">
-                      {formatCurrency(escrowOverview.releasedToday)} released today
-                    </p>
+                    <div className="text-xs text-gray-500 mt-1">
+                      {formatCurrency(escrowOverview?.releasedToday || 0)} released today
+                    </div>
                   </CardContent>
                 </Card>
 
@@ -293,11 +291,11 @@ export default function AdminControlCenter() {
                   </CardHeader>
                   <CardContent>
                     <div className="text-3xl font-bold text-orange-600">
-                      {formatCurrency(escrowOverview.pendingReleases)}
+                      {formatCurrency(escrowOverview?.pendingReleases || 0)}
                     </div>
-                    <p className="text-sm text-muted-foreground mt-2">
-                      {escrowOverview.transactions.readyForRelease} ready for release
-                    </p>
+                    <div className="text-xs text-gray-500 mt-1">
+                      {escrowOverview?.transactions?.readyForRelease || 0} ready for release
+                    </div>
                   </CardContent>
                 </Card>
 
@@ -307,11 +305,11 @@ export default function AdminControlCenter() {
                   </CardHeader>
                   <CardContent>
                     <div className="text-3xl font-bold text-red-600">
-                      {formatCurrency(escrowOverview.disputedAmount)}
+                      {formatCurrency(escrowOverview?.disputedAmount || 0)}
                     </div>
-                    <p className="text-sm text-muted-foreground mt-2">
-                      {escrowOverview.transactions.disputed} active disputes
-                    </p>
+                    <div className="text-xs text-gray-500 mt-1">
+                      {escrowOverview?.transactions?.disputed || 0} active disputes
+                    </div>
                   </CardContent>
                 </Card>
               </div>
@@ -341,7 +339,7 @@ export default function AdminControlCenter() {
                           </span>
                         </div>
                       </div>
-                      <Button 
+                      <Button
                         onClick={() => {
                           setSelectedDispute(dispute);
                           setShowDisputeModal(true);

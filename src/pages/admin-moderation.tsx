@@ -104,7 +104,7 @@ export function AdminModeration() {
   // WebSocket connection for real-time updates
   useEffect(() => {
     const ws = new WebSocket('ws://localhost:5000/ws');
-    
+
     ws.onopen = () => {
       console.log('Connected to moderation WebSocket');
       ws.send(JSON.stringify({ type: 'join_admin_room', roomType: 'moderation' }));
@@ -112,7 +112,7 @@ export function AdminModeration() {
 
     ws.onmessage = (event) => {
       const data = JSON.parse(event.data);
-      
+
       if (data.type === 'new_content_report' || 
           data.type === 'content_action_taken' || 
           data.type === 'bulk_content_action' ||
@@ -120,7 +120,7 @@ export function AdminModeration() {
         // Refresh reports list
         queryClient.invalidateQueries({ queryKey: ['moderation-reports'] });
         queryClient.invalidateQueries({ queryKey: ['moderation-stats'] });
-        
+
         // Show notification for new reports
         if (data.type === 'new_content_report') {
           showNotification(`New content report: ${data.contentType}`, 'info');
@@ -272,7 +272,7 @@ export function AdminModeration() {
     const created = new Date(createdAt);
     const now = new Date();
     const diffHours = Math.floor((now.getTime() - created.getTime()) / (1000 * 60 * 60));
-    
+
     if (diffHours < 1) return 'Just now';
     if (diffHours < 24) return `${diffHours}h ago`;
     return `${Math.floor(diffHours / 24)}d ago`;
@@ -307,7 +307,7 @@ export function AdminModeration() {
             </div>
           </div>
         </div>
-        
+
         <div className="bg-white p-4 rounded-lg shadow">
           <div className="flex items-center justify-between">
             <div>
@@ -319,7 +319,7 @@ export function AdminModeration() {
             </div>
           </div>
         </div>
-        
+
         <div className="bg-white p-4 rounded-lg shadow">
           <div className="flex items-center justify-between">
             <div>
@@ -331,7 +331,7 @@ export function AdminModeration() {
             </div>
           </div>
         </div>
-        
+
         <div className="bg-white p-4 rounded-lg shadow">
           <div className="flex items-center justify-between">
             <div>
@@ -361,7 +361,7 @@ export function AdminModeration() {
               />
             </div>
           </div>
-          
+
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
             <select
@@ -376,7 +376,7 @@ export function AdminModeration() {
               <option value="DISMISSED">Dismissed</option>
             </select>
           </div>
-          
+
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Content Type</label>
             <select
@@ -391,7 +391,7 @@ export function AdminModeration() {
               <option value="USER">Users</option>
             </select>
           </div>
-          
+
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Priority</label>
             <select
@@ -406,7 +406,7 @@ export function AdminModeration() {
               <option value="LOW">Low</option>
             </select>
           </div>
-          
+
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
             <input
@@ -416,7 +416,7 @@ export function AdminModeration() {
               className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
-          
+
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">End Date</label>
             <input
@@ -488,7 +488,7 @@ export function AdminModeration() {
               </div>
             </div>
           </div>
-          
+
           <div className="max-h-96 overflow-y-auto">
             {isLoading ? (
               <div className="p-4 text-center text-gray-500">Loading reports...</div>
@@ -514,7 +514,7 @@ export function AdminModeration() {
                         }}
                         className="mt-1"
                       />
-                      
+
                       <div className="flex-1">
                         <div className="flex items-center gap-2 mb-2">
                           {getContentTypeIcon(report.contentType)}
@@ -533,11 +533,11 @@ export function AdminModeration() {
                             </span>
                           )}
                         </div>
-                        
+
                         <p className="text-sm text-gray-700 mb-2 line-clamp-2">
                           {report.reason}
                         </p>
-                        
+
                         <div className="flex items-center text-xs text-gray-500 space-x-3">
                           <span className="flex items-center">
                             <User className="h-3 w-3 mr-1" />
@@ -550,7 +550,7 @@ export function AdminModeration() {
                         </div>
                       </div>
                     </div>
-                    
+
                     <div className="flex items-center gap-2">
                       {report.status === 'PENDING' && (
                         <button
@@ -592,7 +592,7 @@ export function AdminModeration() {
                   </button>
                 </div>
               </div>
-              
+
               <div className="p-4 space-y-4">
                 {/* Report Info */}
                 <div>

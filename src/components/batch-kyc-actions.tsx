@@ -1,14 +1,14 @@
-
 import { Button } from '@/components/ui/button';
 import { CheckCircle, XCircle } from 'lucide-react';
 
 interface BatchKycActionsProps {
   selectedIds: string[];
+  selectedCount: number;
   onBatchAction: (action: "approve" | "reject", reason?: string) => Promise<void>;
   disabled?: boolean;
 }
 
-export function BatchKycActions({ selectedIds, onBatchAction, disabled }: BatchKycActionsProps) {
+export function BatchKycActions({ selectedIds, onBatchAction, disabled, selectedCount }: BatchKycActionsProps) {
   return (
     <div className="flex gap-2">
       <Button
@@ -18,7 +18,7 @@ export function BatchKycActions({ selectedIds, onBatchAction, disabled }: BatchK
         className="bg-green-600 hover:bg-green-700"
       >
         <CheckCircle className="h-4 w-4 mr-1" />
-        Approve Selected ({selectedIds.length})
+        Approve Selected ({selectedCount})
       </Button>
       <Button
         onClick={() => onBatchAction('reject', selectedIds)}
@@ -27,7 +27,7 @@ export function BatchKycActions({ selectedIds, onBatchAction, disabled }: BatchK
         variant="destructive"
       >
         <XCircle className="h-4 w-4 mr-1" />
-        Reject Selected ({selectedIds.length})
+        Reject Selected ({selectedCount})
       </Button>
     </div>
   );

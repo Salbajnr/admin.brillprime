@@ -5,7 +5,7 @@ import { Badge } from '@/components/ui/badge';
 
 interface KycDocument {
   id: string;
-  fullName: string;
+  fullName?: string;
   status: string;
   submittedAt: string;
   // Add other relevant properties of a KYC document here

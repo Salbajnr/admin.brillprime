@@ -71,7 +71,7 @@ export function AdminFraud() {
     totalRiskReduction: 0
   });
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  
   const [selectedAlerts, setSelectedAlerts] = useState<string[]>([]);
   const [filters, setFilters] = useState({
     severity: '',
@@ -95,6 +95,10 @@ export function AdminFraud() {
       console.log('Fraud dashboard connected');
       newSocket.emit('join_admin_room', 'fraud');
     });
+
+    return () => {
+      newSocket.disconnect();
+    };
 
     newSocket.on('fraud_alert', (data: any) => {
       console.log('New fraud alert:', data);
