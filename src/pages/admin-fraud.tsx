@@ -71,7 +71,6 @@ export function AdminFraud() {
     totalRiskReduction: 0
   });
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   
   const [selectedAlerts, setSelectedAlerts] = useState<string[]>([]);
   const [filters, setFilters] = useState({
@@ -162,9 +161,8 @@ export function AdminFraud() {
       setAlerts(alertsData.data);
       setActivities(activitiesData.data);
       setStats(statsData.data);
-      setError(null);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to fetch fraud data');
+      console.error('Failed to fetch fraud data:', err);
     } finally {
       setLoading(false);
     }

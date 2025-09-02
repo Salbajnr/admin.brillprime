@@ -86,6 +86,7 @@ export function AdminModeration() {
   const queryClient = useQueryClient();
   const [selectedReports, setSelectedReports] = useState<number[]>([]);
   const [selectedReport, setSelectedReport] = useState<ContentReport | null>(null);
+  const [showReportDetail, setShowReportDetail] = useState(false);
   const [filters, setFilters] = useState<ModerationFilters>({
     status: '',
     contentType: '',

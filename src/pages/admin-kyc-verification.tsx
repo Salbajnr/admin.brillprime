@@ -26,6 +26,8 @@ interface MerchantKycStats {
   rejected: number;
 }
 
+import { useState, useEffect } from 'react';
+
 interface KycDocument {
   id: string;
   userId: string;
@@ -38,6 +40,21 @@ interface KycDocument {
   reviewedAt?: string;
   reviewedBy?: string;
   rejectionReason?: string;
+}
+
+interface MerchantKycSubmission {
+  id: string;
+  merchantId: string;
+  businessName: string;
+  status: 'PENDING' | 'APPROVED' | 'REJECTED';
+  submittedAt: string;
+}
+
+interface MerchantKycStats {
+  total: number;
+  pending: number;
+  approved: number;
+  rejected: number;
 }
 
 export function AdminKYCVerification() {
@@ -53,6 +70,26 @@ export function AdminKYCVerification() {
     approved: 0,
     rejected: 0
   });
+
+  const fetchDocuments = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch('/api/admin/kyc/documents', {
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setDocuments(data.data || []);
+      }
+    } catch (error) {
+      console.error('Failed to fetch KYC documents:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     fetchDocuments();

@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useQuery, useMutation } from '@tanstack/react-query';
-import { apiRequest } from '@/lib/queryClient';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -10,10 +9,21 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import {
-  Shield, Users, DollarSign, AlertTriangle, TrendingUp,
-  Eye, CheckCircle, XCircle, Clock, Activity, FileText,
-  Gavel, RefreshCw, Bell, BarChart3, Settings
+  Users, DollarSign, AlertTriangle, Activity, FileText,
+  Gavel, RefreshCw, Bell, Settings
 } from 'lucide-react';
+
+const apiRequest = async (method: string, endpoint: string, data?: any) => {
+  const response = await fetch(endpoint, {
+    method,
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
+    },
+    body: data ? JSON.stringify(data) : undefined
+  });
+  return response.json();
+};
 
 
 
@@ -26,24 +36,28 @@ export default function AdminControlCenter() {
   // Real-time system metrics
   const { data: systemMetrics, refetch: refetchMetrics } = useQuery({
     queryKey: ['/api/admin/system-metrics'],
+    queryFn: () => apiRequest('GET', '/api/admin/system-metrics'),
     refetchInterval: 30000 // Refresh every 30 seconds
   });
 
   // Escrow overview
   const { data: escrowOverview } = useQuery({
     queryKey: ['/api/admin/escrow-overview'],
+    queryFn: () => apiRequest('GET', '/api/admin/escrow-overview'),
     refetchInterval: 60000
   });
 
   // Active disputes
   const { data: disputes } = useQuery({
     queryKey: ['/api/admin/disputes'],
+    queryFn: () => apiRequest('GET', '/api/admin/disputes'),
     refetchInterval: 30000
   });
 
   // Platform analytics
   const { data: analytics } = useQuery({
     queryKey: ['/api/admin/analytics', { timeframe: 'week' }],
+    queryFn: () => apiRequest('GET', '/api/admin/analytics?timeframe=week'),
     refetchInterval: 300000 // 5 minutes
   });
 
