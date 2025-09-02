@@ -15,47 +15,7 @@ import {
   Gavel, RefreshCw, Bell, BarChart3, Settings
 } from 'lucide-react';
 
-interface SystemMetrics {
-  platform: {
-    totalUsers: number;
-    activeUsers: number;
-    onlineDrivers: number;
-    activeMerchants: number;
-    systemUptime: number;
-    serverHealth: string;
-  };
-  transactions: {
-    totalTransactions: number;
-    todayTransactions: number;
-    pendingTransactions: number;
-    disputedTransactions: number;
-    totalVolume: number;
-    escrowBalance: number;
-  };
-  security: {
-    fraudAlerts: number;
-    suspiciousActivities: number;
-    blockedUsers: number;
-    securityIncidents: number;
-  };
-}
 
-interface EscrowOverview {
-  totalBalance: number;
-  pendingReleases: number;
-  disputedAmount: number;
-  releasedToday: number;
-  transactions: {
-    pending: number;
-    disputed: number;
-    readyForRelease: number;
-  };
-  analytics: {
-    averageHoldTime: number;
-    releaseRate: number;
-    disputeRate: number;
-  };
-}
 
 export default function AdminControlCenter() {
   const [activeTab, setActiveTab] = useState('overview');
@@ -73,12 +33,6 @@ export default function AdminControlCenter() {
   const { data: escrowOverview } = useQuery({
     queryKey: ['/api/admin/escrow-overview'],
     refetchInterval: 60000
-  });
-
-  // Pending verifications
-  const { data: pendingVerifications } = useQuery({
-    queryKey: ['/api/admin/pending-verifications'],
-    refetchInterval: 30000
   });
 
   // Active disputes
@@ -102,16 +56,6 @@ export default function AdminControlCenter() {
       toast({ title: "Dispute resolved successfully" });
       setShowDisputeModal(false);
       setSelectedDispute(null);
-    }
-  });
-
-  // Manual escrow action mutation
-  const manualEscrowMutation = useMutation({
-    mutationFn: async (data: any) => {
-      return apiRequest("POST", "/api/admin/escrow/manual-action", data);
-    },
-    onSuccess: () => {
-      toast({ title: "Manual action completed successfully" });
     }
   });
 
@@ -151,7 +95,7 @@ export default function AdminControlCenter() {
         </div>
 
         {/* System Status Cards */}
-        {systemMetrics && (
+        {systemMetrics?.data && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -159,9 +103,9 @@ export default function AdminControlCenter() {
                 <Users className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{systemMetrics.platform.activeUsers.toLocaleString()}</div>
+                <div className="text-2xl font-bold">{(systemMetrics.data?.platform?.activeUsers || 0).toLocaleString()}</div>
                 <p className="text-xs text-muted-foreground">
-                  {systemMetrics.platform.onlineDrivers} drivers online
+                  {systemMetrics.data?.platform?.onlineDrivers || 0} drivers online
                 </p>
               </CardContent>
             </Card>
@@ -172,9 +116,9 @@ export default function AdminControlCenter() {
                 <DollarSign className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{formatCurrency(systemMetrics.transactions.escrowBalance)}</div>
+                <div className="text-2xl font-bold">{formatCurrency(systemMetrics.data?.transactions?.escrowBalance || 0)}</div>
                 <p className="text-xs text-muted-foreground">
-                  {systemMetrics.transactions.pendingTransactions} pending
+                  {systemMetrics.data?.transactions?.pendingTransactions || 0} pending
                 </p>
               </CardContent>
             </Card>
@@ -185,9 +129,9 @@ export default function AdminControlCenter() {
                 <AlertTriangle className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{systemMetrics.security.fraudAlerts}</div>
+                <div className="text-2xl font-bold">{systemMetrics.data?.security?.fraudAlerts || 0}</div>
                 <p className="text-xs text-muted-foreground">
-                  {systemMetrics.security.securityIncidents} incidents today
+                  {systemMetrics.data?.security?.securityIncidents || 0} incidents today
                 </p>
               </CardContent>
             </Card>
@@ -198,9 +142,9 @@ export default function AdminControlCenter() {
                 <Activity className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-green-600">{systemMetrics.platform.serverHealth}</div>
+                <div className="text-2xl font-bold text-green-600">{systemMetrics.data?.platform?.serverHealth || 'Unknown'}</div>
                 <p className="text-xs text-muted-foreground">
-                  Uptime: {formatUptime(systemMetrics.platform.systemUptime)}
+                  Uptime: {formatUptime(systemMetrics.data?.platform?.systemUptime || 0)}
                 </p>
               </CardContent>
             </Card>
@@ -231,13 +175,15 @@ export default function AdminControlCenter() {
                   <div className="space-y-4">
                     <div className="flex justify-between items-center">
                       <span>Today's Transactions</span>
-                      <Badge>{systemMetrics?.transactions.todayTransactions}</Badge>
+                      <Badge>{systemMetrics?.data?.transactions?.todayTransactions || 0}</Badge>
                     </div>
                     <div className="flex justify-between items-center">
-                      <Badge variant="secondary">{systemMetrics?.platform?.activeMerchants || 0}</Badge>
+                      <span>Active Merchants</span>
+                      <Badge variant="secondary">{systemMetrics?.data?.platform?.activeMerchants || 0}</Badge>
                     </div>
-                    <div className="text-center">
-                      <Badge variant="outline">{systemMetrics?.platform?.onlineDrivers || 0}</Badge>
+                    <div className="flex justify-between items-center">
+                      <span>Online Drivers</span>
+                      <Badge variant="outline">{systemMetrics?.data?.platform?.onlineDrivers || 0}</Badge>
                     </div>
                   </div>
                 </CardContent>
@@ -269,7 +215,7 @@ export default function AdminControlCenter() {
 
           {/* Escrow Management Tab */}
           <TabsContent value="escrow" className="space-y-6">
-            {escrowOverview && (
+            {escrowOverview?.data && (
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <Card>
                   <CardHeader>
@@ -277,10 +223,10 @@ export default function AdminControlCenter() {
                   </CardHeader>
                   <CardContent>
                     <div className="text-3xl font-bold text-blue-600">
-                      {formatCurrency(escrowOverview?.totalBalance || 0)}
+                      {formatCurrency(escrowOverview.data?.totalBalance || 0)}
                     </div>
                     <div className="text-xs text-gray-500 mt-1">
-                      {formatCurrency(escrowOverview?.releasedToday || 0)} released today
+                      {formatCurrency(escrowOverview.data?.releasedToday || 0)} released today
                     </div>
                   </CardContent>
                 </Card>
@@ -291,10 +237,10 @@ export default function AdminControlCenter() {
                   </CardHeader>
                   <CardContent>
                     <div className="text-3xl font-bold text-orange-600">
-                      {formatCurrency(escrowOverview?.pendingReleases || 0)}
+                      {formatCurrency(escrowOverview.data?.pendingReleases || 0)}
                     </div>
                     <div className="text-xs text-gray-500 mt-1">
-                      {escrowOverview?.transactions?.readyForRelease || 0} ready for release
+                      {escrowOverview.data?.transactions?.readyForRelease || 0} ready for release
                     </div>
                   </CardContent>
                 </Card>
@@ -305,10 +251,10 @@ export default function AdminControlCenter() {
                   </CardHeader>
                   <CardContent>
                     <div className="text-3xl font-bold text-red-600">
-                      {formatCurrency(escrowOverview?.disputedAmount || 0)}
+                      {formatCurrency(escrowOverview.data?.disputedAmount || 0)}
                     </div>
                     <div className="text-xs text-gray-500 mt-1">
-                      {escrowOverview?.transactions?.disputed || 0} active disputes
+                      {escrowOverview.data?.transactions?.disputed || 0} active disputes
                     </div>
                   </CardContent>
                 </Card>
@@ -324,7 +270,7 @@ export default function AdminControlCenter() {
                 <CardDescription>Disputes requiring admin resolution</CardDescription>
               </CardHeader>
               <CardContent>
-                {disputes?.disputes?.map((dispute: any) => (
+                {disputes?.data?.disputes?.map((dispute: any) => (
                   <div key={dispute.id} className="border rounded-lg p-4 mb-4">
                     <div className="flex justify-between items-start">
                       <div>
@@ -367,15 +313,15 @@ export default function AdminControlCenter() {
                   <CardContent className="space-y-4">
                     <div className="flex justify-between">
                       <span>Total Revenue</span>
-                      <span className="font-semibold">{formatCurrency(analytics?.financial?.revenue || 0)}</span>
+                      <span className="font-semibold">{formatCurrency(analytics?.data?.financial?.revenue || 0)}</span>
                     </div>
                     <div className="flex justify-between">
                       <span>Revenue Growth</span>
-                      <span className="font-semibold text-green-600">+{analytics?.financial?.revenueGrowth || 0}%</span>
+                      <span className="font-semibold text-green-600">+{analytics?.data?.financial?.revenueGrowth || 0}%</span>
                     </div>
                     <div className="flex justify-between">
                       <span>Escrow Turnover</span>
-                      <span className="font-semibold">{analytics?.financial?.escrowTurnover || 0} days</span>
+                      <span className="font-semibold">{analytics?.data?.financial?.escrowTurnover || 0} days</span>
                     </div>
                   </CardContent>
                 </Card>
@@ -387,15 +333,15 @@ export default function AdminControlCenter() {
                   <CardContent className="space-y-4">
                     <div className="flex justify-between">
                       <span>Daily Active Users</span>
-                      <span className="font-semibold">{(analytics?.userBehavior?.dailyActiveUsers || 0).toLocaleString()}</span>
+                      <span className="font-semibold">{(analytics?.data?.userBehavior?.dailyActiveUsers || 0).toLocaleString()}</span>
                     </div>
                     <div className="flex justify-between">
                       <span>Conversion Rate</span>
-                      <span className="font-semibold">{analytics?.userBehavior?.conversionRate || 0}%</span>
+                      <span className="font-semibold">{analytics?.data?.userBehavior?.conversionRate || 0}%</span>
                     </div>
                     <div className="flex justify-between">
                       <span>Retention Rate</span>
-                      <span className="font-semibold">{analytics?.userBehavior?.retentionRate || 0}%</span>
+                      <span className="font-semibold">{analytics?.data?.userBehavior?.retentionRate || 0}%</span>
                     </div>
                   </CardContent>
                 </Card>

@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 
 export function AdminSupport() {
   const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     // Placeholder for fetching support tickets

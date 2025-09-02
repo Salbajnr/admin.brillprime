@@ -194,6 +194,7 @@ export function AdminKYCVerification() {
         </div>
         {selectedDocuments.length > 0 && (
           <BatchKycActions
+            selectedIds={selectedDocuments}
             selectedCount={selectedDocuments.length}
             onBatchAction={handleBatchAction}
           />

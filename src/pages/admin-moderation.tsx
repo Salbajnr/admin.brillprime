@@ -1,14 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { 
   Shield, 
-  AlertTriangle, 
   CheckCircle, 
-  XCircle, 
-  Eye, 
   Clock, 
-  Users, 
-  Filter,
   Search,
   RefreshCw,
   ArrowUp,
@@ -91,7 +86,6 @@ export function AdminModeration() {
   const queryClient = useQueryClient();
   const [selectedReports, setSelectedReports] = useState<number[]>([]);
   const [selectedReport, setSelectedReport] = useState<ContentReport | null>(null);
-  const [showReportDetail, setShowReportDetail] = useState(false);
   const [filters, setFilters] = useState<ModerationFilters>({
     status: '',
     contentType: '',
@@ -160,7 +154,6 @@ export function AdminModeration() {
       queryClient.invalidateQueries({ queryKey: ['moderation-stats'] });
       showNotification('Action completed successfully', 'success');
       setSelectedReport(null);
-      setShowReportDetail(false);
     },
     onError: () => {
       showNotification('Failed to complete action', 'error');

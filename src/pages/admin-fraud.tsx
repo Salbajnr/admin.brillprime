@@ -71,6 +71,7 @@ export function AdminFraud() {
     totalRiskReduction: 0
   });
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   
   const [selectedAlerts, setSelectedAlerts] = useState<string[]>([]);
   const [filters, setFilters] = useState({
