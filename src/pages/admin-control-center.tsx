@@ -369,15 +369,15 @@ export default function AdminControlCenter() {
                   <CardContent className="space-y-4">
                     <div className="flex justify-between">
                       <span>Total Revenue</span>
-                      <span className="font-semibold">{formatCurrency(analytics.analytics.financial.revenueGrowth)}</span>
+                      <span className="font-semibold">{formatCurrency(analytics?.financial?.revenue || 0)}</span>
                     </div>
                     <div className="flex justify-between">
                       <span>Revenue Growth</span>
-                      <span className="font-semibold text-green-600">+{analytics.analytics.financial.revenueGrowth}%</span>
+                      <span className="font-semibold text-green-600">+{analytics?.financial?.revenueGrowth || 0}%</span>
                     </div>
                     <div className="flex justify-between">
                       <span>Escrow Turnover</span>
-                      <span className="font-semibold">{analytics.analytics.financial.escrowTurnover} days</span>
+                      <span className="font-semibold">{analytics?.financial?.escrowTurnover || 0} days</span>
                     </div>
                   </CardContent>
                 </Card>
@@ -389,15 +389,15 @@ export default function AdminControlCenter() {
                   <CardContent className="space-y-4">
                     <div className="flex justify-between">
                       <span>Daily Active Users</span>
-                      <span className="font-semibold">{analytics.analytics.userBehavior.dailyActiveUsers.toLocaleString()}</span>
+                      <span className="font-semibold">{(analytics?.userBehavior?.dailyActiveUsers || 0).toLocaleString()}</span>
                     </div>
                     <div className="flex justify-between">
                       <span>Conversion Rate</span>
-                      <span className="font-semibold">{analytics.analytics.userBehavior.conversionRate}%</span>
+                      <span className="font-semibold">{analytics?.userBehavior?.conversionRate || 0}%</span>
                     </div>
                     <div className="flex justify-between">
                       <span>Retention Rate</span>
-                      <span className="font-semibold">{analytics.analytics.userBehavior.retentionRate}%</span>
+                      <span className="font-semibold">{analytics?.userBehavior?.retentionRate || 0}%</span>
                     </div>
                   </CardContent>
                 </Card>

@@ -1,21 +1,17 @@
-
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { 
   Activity, 
   Server, 
   Database, 
   Cpu, 
-  HardDrive, 
   Network, 
   AlertTriangle,
   CheckCircle,
   XCircle,
-  Clock,
   Users,
   TrendingUp,
   AlertCircle
@@ -146,7 +142,7 @@ const AdminSystemMonitoring = () => {
               <CardContent>
                 <div className="flex items-center space-x-2">
                   {getStatusIcon(metrics?.database.status || 'healthy')}
-                  <div className="text-2xl font-bold capitalize">
+                  <div className={`text-2xl font-bold capitalize ${getStatusColor(metrics?.database.status || 'healthy')}`}>
                     {metrics?.database.status || 'Healthy'}
                   </div>
                 </div>

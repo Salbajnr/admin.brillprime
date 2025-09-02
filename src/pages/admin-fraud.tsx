@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { AlertTriangle, Shield, Eye, Flag, Clock, TrendingUp, Users, DollarSign, Activity, Search, Filter, RefreshCw, Ban, CheckCircle, X, Play, Pause, MoreHorizontal } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { AlertTriangle, Shield, Eye, Flag, TrendingUp, Users, Activity, Search, Filter, RefreshCw, CheckCircle, X, Play, MoreHorizontal } from 'lucide-react';
 import io from 'socket.io-client';
 
 interface FraudAlert {
@@ -96,23 +96,20 @@ export function AdminFraud() {
       newSocket.emit('join_admin_room', 'fraud');
     });
 
-    newSocket.on('fraud_alert', (data) => {
-      if (data.type === 'fraud_alert') {
-        setAlerts(prev => [data.alert, ...prev]);
-        fetchStats();
-      }
+    newSocket.on('fraud_alert', (data: any) => {
+      console.log('New fraud alert:', data);
+      setAlerts(prev => [data.alert, ...prev]);
+      fetchStats();
     });
 
-    newSocket.on('suspicious_activity', (data) => {
-      if (data.type === 'suspicious_activity') {
-        setActivities(prev => [data.activity, ...prev.slice(0, 49)]);
-      }
+    newSocket.on('suspicious_activity', (data: any) => {
+      console.log('Suspicious activity:', data);
+      setActivities(prev => [data.activity, ...prev.slice(0, 49)]);
     });
 
-    newSocket.on('fraud_alert_updated', (data) => {
-      if (data.type === 'fraud_alert_updated') {
-        fetchFraudData();
-      }
+    newSocket.on('fraud_alert_updated', (data: any) => {
+      console.log('Fraud alert updated:', data);
+      fetchFraudData();
     });
 
     return () => newSocket.disconnect();
@@ -153,7 +150,7 @@ export function AdminFraud() {
 
       const [alertsData, activitiesData, statsData] = await Promise.all([
         alertsRes.json(),
-        activitiesRes.json(),  
+        activitiesRes.json(),
         statsRes.json()
       ]);
 
@@ -193,7 +190,7 @@ export function AdminFraud() {
   const handleAlertAction = async (alertId: string, action: string, reason?: string) => {
     try {
       setProcessingAction(`${action}-${alertId}`);
-      
+
       const response = await fetch(`/api/admin/fraud/alerts/${alertId}/${action}`, {
         method: 'POST',
         headers: {
@@ -223,7 +220,7 @@ export function AdminFraud() {
 
     try {
       setProcessingAction(`bulk-${action}`);
-      
+
       const response = await fetch('/api/admin/fraud/alerts/bulk-action', {
         method: 'POST',
         headers: {
