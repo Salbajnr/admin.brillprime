@@ -22,3 +22,6 @@ args = "npm run build"
 localPort = 4173
 externalPort = 80
 exposeLocalhost = true
+
+[agent]
+expertMode = true
