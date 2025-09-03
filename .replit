@@ -1,0 +1,19 @@
+modules = ["nodejs-20", "web"]
+run = "npm run install"
+
+[nix]
+channel = "stable-25_05"
+
+[deployment]
+run = ["sh", "-c", "npm run build"]
+
+[workflows]
+
+[[workflows.workflow]]
+name = "Build App"
+author = 47124578
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "npm run build"
