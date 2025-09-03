@@ -17,3 +17,11 @@ mode = "sequential"
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "npm run build"
+
+[[ports]]
+localPort = 4173
+externalPort = 80
+exposeLocalhost = true
+
+[agent]
+expertMode = true
